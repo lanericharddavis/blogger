@@ -27,7 +27,7 @@ namespace blogger.Controllers
       try
       {
         Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
-        Profile currentUser = _service.GetOrCreateProfile(userInfo);
+        Profile currentUser = _service.GetOrCreateAccountProfile(userInfo);
         return Ok(currentUser);
       }
       catch (Exception error)

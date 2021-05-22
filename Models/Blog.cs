@@ -12,5 +12,6 @@ namespace blogger.Models
     public string imgUrl { get; set; }
     public bool published { get; set; }
     public string CreatorId { get; set; }
+    public Profile Creator { get; set; }
   }
 }

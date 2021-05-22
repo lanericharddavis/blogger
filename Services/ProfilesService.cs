@@ -11,14 +11,19 @@ namespace blogger.Services
     {
       _repo = repo;
     }
-    internal Profile GetOrCreateProfile(Profile userInfo)
+    internal Profile GetOrCreateAccountProfile(Profile userInfo)
     {
-      Profile profile = _repo.GetById(userInfo.Id);
+      Profile profile = _repo.GetAccountById(userInfo.Id);
       if (profile == null)
       {
-        return _repo.Create(userInfo);
+        return _repo.CreateAccount(userInfo);
       }
       return profile;
+    }
+
+    internal object getProfile(int id)
+    {
+      return _repo.getProfile(@id);
     }
   }
 }
