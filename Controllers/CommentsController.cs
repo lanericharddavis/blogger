@@ -55,25 +55,25 @@ namespace blogger.Controllers
       }
     }
 
-    [HttpPut("{id}")]
-    [Authorize]
-    public ActionResult<Comment> EditComment(int id, [FromBody] Comment newComment)
-    {
-      try
-      {
-        Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
-        Profile fullProfile = _profileService.GetOrCreateAccountProfile(userInfo);
-        newComment.CreatorId = userInfo.Id;
-        Comment comment = _service.CreateComment(newComment);
-        comment.Creator = fullProfile;
-        Comment found = _service.EditComment(id);
-        return Ok(found);
-      }
-      catch (Exception e)
-      {
-        return BadRequest(e.Message);
-      }
-    }
+    // [HttpPut("{id}")]
+    // [Authorize]
+    // public async Task<ActionResult<Comment>> EditComment(int id, [FromBody] Comment newComment)
+    // {
+    //   try
+    //   {
+    //     Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+    //     Profile fullProfile = _profileService.GetOrCreateAccountProfile(userInfo);
+    //     newComment.CreatorId = userInfo.Id;
+    //     Comment comment = _service.CreateComment(newComment);
+    //     comment.Creator = fullProfile;
+    //     Comment found = _service.EditComment(id);
+    //     return Ok(found);
+    //   }
+    //   catch (Exception e)
+    //   {
+    //     return BadRequest(e.Message);
+    //   }
+    // }
 
     [HttpDelete("{id}")]
     [Authorize]

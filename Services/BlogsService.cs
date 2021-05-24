@@ -17,9 +17,14 @@ namespace blogger.Services
       return _repo.GetAllBlogs();
     }
 
-    internal object GetOneBlog(int id)
+    internal Blog GetOneBlog(int id)
     {
-      return _repo.GetOneBlog(@id);
+      Blog blog = _repo.GetOneBlog(id);
+      if (blog == null)
+      {
+        throw new Exception("Invalid Blog Id");
+      }
+      return blog;
     }
 
     internal Blog CreateBlog(Blog newBlog)
@@ -27,5 +32,17 @@ namespace blogger.Services
       return _repo.CreateBlog(newBlog);
     }
 
+    internal void DeleteBlog(int id, string creatorId)
+    {
+      Blog comment = GetOneBlog(id);
+      if (comment.CreatorId != creatorId)
+      {
+        throw new Exception("You cannot delete another users Blog");
+      }
+      if (!_repo.DeleteBlog(id))
+      {
+        throw new Exception("Something has gone wrong, review code");
+      }
+    }
   }
 }

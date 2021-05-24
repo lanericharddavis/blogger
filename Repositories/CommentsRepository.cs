@@ -32,14 +32,14 @@ namespace blogger.Repositories
       , new { id }, splitOn: "id").FirstOrDefault();
     }
 
-    internal Comment EditComment(int id)
-    {
-      string sql = @"
-      UPDATE comments
-      SET
-        body = 
-      ";
-    }
+    // internal Comment EditComment(int id)
+    // {
+    //   string sql = @"
+    //   UPDATE comments
+    //   SET
+    //     body = 
+    //   ";
+    // }
 
     internal IEnumerable<Comment> GetAllBlogsComments(int id)
     {

@@ -29,7 +29,8 @@ namespace blogger.Repositories
       }, splitOn: "id");
     }
 
-    internal object GetOneBlog(int id)
+    //NOTE unable to populate profiles on blogs after trying to get by Id.  Postman keeps sending a 400 Bad Request: Column 'id' in where clause is ambiguous
+    internal Blog GetOneBlog(int id)
     {
       string sql = @"
       SELECT
@@ -46,6 +47,7 @@ namespace blogger.Repositories
       , new { id }, splitOn: "id").FirstOrDefault();
     }
 
+
     internal Blog CreateBlog(Blog newBlog)
     {
       string sql = @"
@@ -57,5 +59,13 @@ namespace blogger.Repositories
       newBlog.Id = _db.ExecuteScalar<int>(sql, newBlog);
       return newBlog;
     }
+
+    internal bool DeleteBlog(int id)
+    {
+      string sql = "DELETE FROM blogs WHERE id = @id LIMIT 1";
+      int affectedRows = _db.Execute(sql, new { id });
+      return affectedRows == 1;
+    }
+
   }
 }

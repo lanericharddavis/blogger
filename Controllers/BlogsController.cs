@@ -14,10 +14,12 @@ namespace blogger.Controllers
   public class BlogsController : ControllerBase
   {
     private readonly BlogsService _service;
+    private readonly CommentsService _commentsService;
     private readonly ProfilesService _profileService;
-    public BlogsController(BlogsService service, ProfilesService profilesService)
+    public BlogsController(BlogsService service, CommentsService commentsService, ProfilesService profilesService)
     {
       _service = service;
+      _commentsService = commentsService;
       _profileService = profilesService;
     }
 
@@ -49,8 +51,18 @@ namespace blogger.Controllers
       }
     }
 
-    // [HttpGet("{id}/comments")]
-    //TODO get all Blog's comments
+    [HttpGet("{id}/comments")]
+    public ActionResult<IEnumerable<Blog>> GetAllBlogsComments(int id)
+    {
+      try
+      {
+        return Ok(_commentsService.GetAllBlogsComments(id));
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
 
     [HttpPost]
     [Authorize]
@@ -72,13 +84,25 @@ namespace blogger.Controllers
       }
     }
 
-
     // [HttpPut("{id}")]
     //TODO edit single Blog
     //NOTE Need to be authorized (can only modify your own)
-    // [HttpDelete("{id}")]
-    //TODO delete single Blog
-    //NOTE Need to be authorized (can only modify your own)
+
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<ActionResult<Blog>> DeleteBlog(int id)
+    {
+      try
+      {
+        Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+        _service.DeleteBlog(id, userInfo.Id);
+        return Ok("Blog Deleted");
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
 
   }
 }
